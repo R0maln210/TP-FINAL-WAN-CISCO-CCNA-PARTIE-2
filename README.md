@@ -9,7 +9,7 @@ title: TP FINAL - Introduction to networks Partie 2 CCNA1
 
 ### Architecture du LAB : 
 
-![01 - lab complet](https://hackmd.io/_uploads/H1zqHQ8ozl.png)
+<img width="2512" height="1347" alt="01 - lab complet" src="https://github.com/user-attachments/assets/bbdb40f2-9cb6-4a6c-923b-5f63f6d40022" />
 
 ### Configuration de chaque routeur : 
 
@@ -811,20 +811,19 @@ end
 
 #### Table de voisinage EIGRP : 
 
-![02 - show ip eigrp neighbors](https://hackmd.io/_uploads/SyxHFX8iMl.png)
+<img width="1208" height="463" alt="02 - show ip eigrp neighbors" src="https://github.com/user-attachments/assets/f4e8ab88-67de-4284-b01e-10440b3d6fca" />
 
 #### Table de routage : 
 
-![03 - show ip route](https://hackmd.io/_uploads/SyPLY7IiMx.png)
+<img width="1280" height="1165" alt="03 - show ip route" src="https://github.com/user-attachments/assets/f2ef124a-50a6-4130-ae6b-6aca771fe69b" />
 
 #### Ping depuis le PC1 : 
 
-![04 - ping depuis PC1](https://hackmd.io/_uploads/S1lMqX8oMe.png)
+<img width="948" height="527" alt="04 - ping depuis PC1" src="https://github.com/user-attachments/assets/952240d9-399b-4bc3-b268-47ac14e9d261" />
 
 #### Table de routage après rupture d'un lien : 
 
-![05 - show ip route après rupture d'un lien](https://hackmd.io/_uploads/rJY-9mUiGe.png)
-
+<img width="1221" height="1168" alt="05 - show ip route après rupture d&#39;un lien" src="https://github.com/user-attachments/assets/a89b809f-5676-4f13-9737-66c4ff5251d0" />
 
 ### Rapport de Synthèse – Cahier des Charges 1
 
@@ -880,7 +879,7 @@ La validation fonctionnelle du réseau s'est déroulée en quatre étapes :
 
 ### Architecture du lab :
 
-![01 - lab complet](https://hackmd.io/_uploads/H1HB9r8jMg.png)
+<img width="2554" height="1394" alt="01 - lab complet" src="https://github.com/user-attachments/assets/10dee4e7-4087-4cd8-b214-7b958f2c7375" />
 
 ### Configuration de chaque routeur : 
 
@@ -1980,19 +1979,19 @@ interface: Tunnel0
 
 #### Show ip nhrp sur le HUB
 
-![02 - show ip nhrp HUB](https://hackmd.io/_uploads/BJljyU8jGx.png)
+<img width="777" height="501" alt="02 - show ip nhrp HUB" src="https://github.com/user-attachments/assets/f4f24203-c804-4e2d-b686-3a79e7cb22db" />
 
 #### Show ip nhrp sur les SPOKES
 
-![03 - show ip nhrp  SPOKE](https://hackmd.io/_uploads/H1Siy8Lsfx.png)
+<img width="1903" height="1100" alt="03 - show ip nhrp  SPOKE" src="https://github.com/user-attachments/assets/3c70c512-a815-46de-842a-ee02dc0101cb" />
 
 #### Ping entre PC1 et PC2
 
-![04 - ping entre pc](https://hackmd.io/_uploads/By_ikLLjGe.png)
+<img width="2473" height="819" alt="04 - ping entre pc" src="https://github.com/user-attachments/assets/f6116268-116b-4312-9de2-4b8156c45aa8" />
 
 #### Preuve de ping entre PC1 et PC2 et capture Wireshark
 
-![05 - preuve des ping](https://hackmd.io/_uploads/SkojJU8sMe.png)
+<img width="3200" height="1904" alt="05 - preuve des ping" src="https://github.com/user-attachments/assets/c64212ed-5509-4c57-a5af-974ad1156927" />
 
 ### Rapport de Synthèse – Cahier des Charges 2
 
@@ -2059,7 +2058,7 @@ Malgré la validation complète des exigences du CDC 2, plusieurs axes d'amélio
 
 ### Architecture du lab :
 
-![01 - lab complet](https://hackmd.io/_uploads/SyRLWv8jMg.png)
+<img width="2529" height="1415" alt="01 - lab complet" src="https://github.com/user-attachments/assets/2c95ab6b-de73-48cf-a542-0f9462ff8aac" />
 
 ### Configuration de chaque routeur : 
 
@@ -3014,15 +3013,15 @@ end
 
 #### Show ip bgp summary de R1 à R5
 
-![02 - show ip bgp summary R1-5](https://hackmd.io/_uploads/SyiZdvIofe.png)
+<img width="3200" height="1555" alt="02 - show ip bgp summary R1-5" src="https://github.com/user-attachments/assets/e401d5e6-ee35-456d-ab4b-f7e4bfe7abf6" />
 
 #### Show ip bgp R1 et R4
 
-![03 - show ip bgp R1 et R4](https://hackmd.io/_uploads/SyC-dw8sGx.png)
+<img width="2536" height="628" alt="03 - show ip bgp R1 et R4" src="https://github.com/user-attachments/assets/85805912-9317-41be-aef0-c5f02e35f387" />
 
 #### Changement de politique BGP
 
-![04 - changement de politique](https://hackmd.io/_uploads/SyMzdPIjze.png)
+<img width="2467" height="794" alt="04 - changement de politique" src="https://github.com/user-attachments/assets/0b40f915-f61f-4953-a4f5-b02f7ecb0c5f" />
 
 #### Connectivité au Cloud
 
