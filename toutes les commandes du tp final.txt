@@ -1,0 +1,443 @@
+R1 : 
+
+/*CONFIG DE BASE*/
+en
+conf t
+hostname R1
+
+interface f0/0
+ip add 192.168.0.254 255.255.255.0
+no shutdown
+exit
+
+interface g1/0
+ip add 192.168.1.0 255.255.255.254
+no shutdown
+exit
+
+interface s6/0
+ip add 192.168.4.0 255.255.255.254
+clockrate 64000
+encapsulation ppp
+no shutdown
+exit
+
+interface f4/0
+ip add 192.168.5.0 255.255.255.254
+no shutdown
+exit
+
+/*CONFIG EIGRP*/
+router eigrp 100
+passive-interface fa0/0
+network 192.168.0.0 0.0.0.255
+network 192.168.1.0 0.0.0.1
+network 192.168.4.0 0.0.0.1
+network 192.168.5.0 0.0.0.1
+no auto-summary
+exit
+
+/*CONFIG CRYPTO*/
+crypto isakmp Policy 10
+encr aes 256
+hash sha256
+authentication pre-share
+group 14
+lifetime 86400
+exit
+
+crypto isakmp key SatomSecretKey123 address 0.0.0.0 0.0.0.0
+
+crypto ipsec transform-set TS-DMVPN esp-aes 256 esp-sha256-hmac
+mode transport
+exit
+
+crypto ipsec profile IPSEC-PROFILE-DMVPN
+set transform-set TS-DMVPN
+exit
+
+/*CONFIG TUNNEL*/
+interface Tunnel0
+description interface Hub DMVPN CDC 2 
+ip add 172.16.0.1 255.255.255.0
+no ip redirects
+ip mtu 1400
+ip tcp adjust-mss 1360
+ip nhrp authentication SatomNHRP
+ip nhrp network-id 100
+ip nhrp redirect
+ip nhrp map multicast dynamic
+ip nhrp authentication SatmNHRP
+tunnel source g1/0
+tunnel mode gre multipoint
+tunnel protection ipsec profile IPSEC-PROFILE-DMVPN
+no ip split-horizon eigrp 100
+
+exit
+
+router eigrp 100
+network 172.16.0.0 0.0.0.255
+exit
+
+/*CONFIG BGP*/
+router bgp 65000
+bgp log-neighbor-changes
+neighbor 172.16.0.2 remote-as 65000
+neighbor 172.16.0.3 remote-as 65000
+neighbor 172.16.0.4 remote-as 65000
+neighbor 192.168.5.1 remote-as 65000
+neighbor 192.168.5.1 next-hop-self
+network 192.168.0.0 mask 255.255.255.0
+exit
+
+ip route 192.168.0.0 255.255.255.0 Null0
+
+end
+wr
+
+
+
+R2 : 
+
+/*CONFIG DE BASE*/
+en
+conf t
+hostname R2
+
+interface g1/0
+ip add 192.168.1.1 255.255.255.254
+no shutdown
+exit
+
+interface g2/0
+ip add 192.168.2.0 255.255.255.254
+no shutdown
+exit
+
+/*CONFIG EIGRP*/
+router eigrp 100
+network 192.168.1.0 0.0.0.1
+network 192.168.2.0 0.0.0.1
+no auto-summary
+exit
+
+/*CONFIG CRYPTO*/
+crypto isakmp policy 10
+encr aes 256
+hash sha256
+authentication pre-share
+group 14
+lifetime 86400
+exit
+
+crypto isakmp key SatomSecretKey123 address 0.0.0.0 0.0.0.0
+
+crypto ipsec transform-set TS-DMVPN esp-aes 256 esp-sha256-hmac
+mode transport
+exit
+
+crypto ipsec profile IPSEC-PROFILE-DMVPN
+set transform-set TS-DMVPN
+exit
+
+interface Tunnel0
+description Interface Spoke DMVPN R2
+ip add 172.16.0.2 255.255.255.0
+no ip redirects
+ip mtu 1400
+ip tcp adjust-mss 1360
+ip nhrp network-id 100
+ip nhrp shortcut
+ip nhrp nhs 172.16.0.1
+ip nhrp map 172.16.0.1 192.168.1.0
+ip nhrp map multicast 192.168.1.0
+ip nhrp authentication SatmNHRP
+
+tunnel source g1/0
+tunnel mode gre multipoint
+tunnel protection ipsec profile IPSEC-PROFILE-DMVPN
+exit
+
+router eigrp 100
+network 172.16.0.0 0.0.0.255
+exit
+
+/*CONFIG BGP*/
+router bgp 65000
+bgp log-neighbor-changes
+neighbor 172.16.0.1 remote-as 65000
+neighbor 172.16.0.3 remote-as 65000
+neighbor 172.16.0.4 remote-as 65000
+exit
+
+end
+wr
+
+
+
+R3 : 
+
+/*CONFIG DE BASE*/
+en
+conf t
+hostname R3
+
+interface g1/0
+ip add 192.168.3.0 255.255.255.254
+no shutdown
+exit
+
+interface g2/0
+ip add 192.168.2.1 255.255.255.254
+no shutdown
+exit
+
+/*CONFIG EIGRP*/
+router eigrp 100
+network 192.168.2.0 0.0.0.1
+network 192.168.3.0 0.0.0.1
+no auto-summary
+exit
+
+/*CONFIG CRYPTO*/
+crypto isakmp policy 10
+encr aes 256
+hash sha256
+authentication pre-share
+group 14
+lifetime 86400
+exit
+
+crypto isakmp key SatomSecretKey123 address 0.0.0.0 0.0.0.0
+
+crypto ipsec transform-set TS-DMVPN esp-aes 256 esp-sha256-hmac
+mode transport
+exit
+
+crypto ipsec profile IPSEC-PROFILE-DMVPN
+set transform-set TS-DMVPN
+exit
+
+interface Tunnel0
+description Interface Spoke DMVPN R3
+ip add 172.16.0.3 255.255.255.0
+no ip redirects
+ip mtu 1400
+ip tcp adjust-mss 1360
+ip nhrp authentication SatomNHRP
+ip nhrp network-id 100
+ip nhrp shortcut
+ip nhrp nhs 172.16.0.1
+ip nhrp map 172.16.0.1 192.168.1.0
+ip nhrp map multicast 192.168.1.0
+ip nhrp authentication SatmNHRP
+ 
+tunnel source GigabitEthernet2/0
+tunnel mode gre multipoint
+tunnel protection ipsec profile IPSEC-PROFILE-DMVPN
+exit
+
+router eigrp 100
+network 172.16.0.0 0.0.0.255
+exit
+
+/*CONFIG BGP*/
+router bgp 65000
+bgp log-neighbor-changes
+neighbor 172.16.0.1 remote-as 65000
+neighbor 172.16.0.2 remote-as 65000
+neighbor 172.16.0.4 remote-as 65000
+exit
+
+end
+wr
+
+
+
+R4 : 
+
+/*CONFIG DE BASE*/
+en
+conf t
+hostname R4
+
+interface f0/0
+ip add 192.168.7.254 255.255.255.0
+no shutdown
+exit
+
+interface g1/0
+ip add 192.168.3.1 255.255.255.254
+no shutdown
+exit
+
+interface s6/0
+ip add 192.168.4.1 255.255.255.254
+encapsulation ppp
+no shutdown
+exit
+
+interface f4/1
+ip add 192.168.6.1 255.255.255.254
+no shutdown
+exit
+
+/*CONFIG EIGRP*/
+router eigrp 100
+passive-interface fa0/0
+network 192.168.7.0 0.0.0.255
+network 192.168.3.0 0.0.0.1
+network 192.168.4.0 0.0.0.1
+network 192.168.6.0 0.0.0.1
+no auto-summary
+exit
+
+/*CONFIG CRYPTO*/
+crypto isakmp policy 10
+encr aes 256
+hash sha256
+authentication pre-share
+group 14
+lifetime 86400
+exit
+
+crypto isakmp key SatomSecretKey123 address 0.0.0.0 0.0.0.0
+
+crypto ipsec transform-set TS-DMVPN esp-aes 256 esp-sha256-hmac
+mode transport
+exit
+
+crypto ipsec profile IPSEC-PROFILE-DMVPN
+set transform-set TS-DMVPN
+exit
+
+interface Tunnel0
+description Interface Spoke DMVPN R4
+ip address 172.16.0.4 255.255.255.0
+no ip redirects
+ip mtu 1400
+ip tcp adjust-mss 1360
+ip nhrp authentication SatomNHRP
+ip nhrp network-id 100
+ip nhrp shortcut
+ip nhrp nhs 172.16.0.1
+ip nhrp map 172.16.0.1 192.168.1.0
+ip nhrp map multicast 192.168.1.0
+ip nhrp authentication SatmNHRP
+ 
+tunnel source GigabitEthernet1/0
+tunnel mode gre multipoint
+tunnel protection ipsec profile IPSEC-PROFILE-DMVPN
+exit
+
+router eigrp 100
+network 172.16.0.0 0.0.0.255
+exit
+
+/*CONFIG BGP*/
+router bgp 65000
+bgp log-neighbor-changes
+neighbor 172.16.0.1 remote-as 65000
+neighbor 172.16.0.2 remote-as 65000
+neighbor 172.16.0.3 remote-as 65000
+neighbor 192.168.6.0 remote-as 65000
+neighbor 192.168.6.0 next-hop-self
+network 192.168.7.0 mask 255.255.255.0
+exit
+
+ip route 192.168.7.0 255.255.255.0 Null0
+
+end
+wr
+
+
+
+R5 : 
+
+/*CONFIG DE BASE*/
+en
+conf t
+hostname R5
+
+interface g1/0
+no shutdown
+exit
+
+interface f4/0
+ip add 192.168.5.1 255.255.255.254
+ip nat inside
+no shutdown
+exit
+
+interface f4/1
+ip add 192.168.6.0 255.255.255.254
+ip nat inside
+no shutdown
+exit
+
+interface loopback 0
+ip address 10.40.10.1 255.255.255.0
+ip nat outside
+exit
+
+access-list 1 permit any
+ip nat Inside source list 1 interface Loopback0 overload
+
+ip route 0.0.0.0 0.0.0.0 Loopback0
+
+/*CONFIG EIGRP*/
+router eigrp 100
+redistribute static
+passive-interface g1/0
+network 192.168.5.0 0.0.0.1
+network 192.168.6.0 0.0.0.1
+network 10.40.10.0 0.0.0.255
+no auto-summary
+exit
+
+/*CONFIG BGP*/
+
+no ip route 0.0.0.0 0.0.0.0 Loopback0
+no interface Loopback0
+interface g1/0
+ip add 10.40.10.2 255.255.255.0
+no shutdown
+exit
+
+ip prefix-list PERMIT-VPC-ONLY seq 10 permit 192.168.0.0/24
+ip prefix-list PERMIT-VPC-ONLY seq 20 permit 192.168.7.0/24
+
+router bgp 65000
+bgp log-neighbor-changes
+bgp default local-preference 200
+
+neighbor 192.168.5.0 remote-as 65000
+neighbor 192.168.5.0 next-hop-self
+neighbor 192.168.5.0 default-originate
+
+neighbor 192.168.6.1 remote-as 65000
+neighbor 192.168.6.1 next-hop-self
+neighbor 192.168.6.1 default-originate
+
+neighbor 10.40.10.1 remote-as 65100
+neighbor 10.40.10.1 prefix-list PERMIT-VPC-ONLY out
+exit
+
+end
+wr
+
+
+
+PC1 : 
+
+set pcname PC1
+ip 192.168.0.1/24 192.168.0.254
+save
+
+
+
+PC2 : 
+
+set pcname PC2
+ip 192.168.7.1/24 192.168.7.254
+save
